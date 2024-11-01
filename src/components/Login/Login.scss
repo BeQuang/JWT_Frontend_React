@@ -1,20 +1,40 @@
 .login-container {
   padding: 72px 0 112px 0;
   background-color: #f2f4f7;
+  min-height: 100vh;
 
   .content-left {
+    .brand {
+      width: 48%;
+    }
+
+    .detail {
+      padding-left: 4%;
+    }
   }
 
   .content-right {
-    padding: 10px 0 20px 0;
-    margin-top: 40px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 8px 16px rgba(0, 0, 0, 0.1);
+    .form-login {
+      padding: 10px 0 20px 0;
+      margin-top: 40px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1),
+        0px 8px 16px rgba(0, 0, 0, 0.1);
+    }
 
     .btn-login {
       background-color: #42b72a;
       line-height: 48px;
       padding: 0 16px;
+    }
+
+    .forgot-password,
+    .create-page {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
