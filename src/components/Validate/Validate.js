@@ -8,33 +8,52 @@ const validateEmail = (email) => {
     );
 };
 
-const validateRegister = (dataRegister) => {
+const validateRegister = (dataRegister, setObjectCheckValid) => {
+  const defaultValid = {
+    validUsername: true,
+    validEmail: true,
+    validPassword: true,
+    validConfirmPassword: true,
+    validGender: true,
+    validAddress: true,
+    validPhoneNumber: true,
+  };
+
+  setObjectCheckValid(defaultValid);
+
   if (!dataRegister.username) {
     toast.error("Username is required");
+    setObjectCheckValid((prev) => ({ ...prev, validUsername: false }));
     return false;
   }
   if (!validateEmail(dataRegister.email)) {
     toast.error("Please enter a valid email");
+    setObjectCheckValid((prev) => ({ ...prev, validEmail: false }));
     return false;
   }
   if (!dataRegister.password) {
     toast.error("Password is required");
+    setObjectCheckValid((prev) => ({ ...prev, validPassword: false }));
     return false;
   }
   if (dataRegister.password !== dataRegister.confirmPassword) {
     toast.error("Authentication passwords are not the same");
+    setObjectCheckValid((prev) => ({ ...prev, validConfirmPassword: false }));
     return false;
   }
   if (!dataRegister.gender) {
     toast.error("Gender is required");
+    setObjectCheckValid((prev) => ({ ...prev, validGender: false }));
     return false;
   }
   if (!dataRegister.address) {
     toast.error("Address is required");
+    setObjectCheckValid((prev) => ({ ...prev, validAddress: false }));
     return false;
   }
   if (!dataRegister.phoneNumber) {
     toast.error("PhoneNumber is required");
+    setObjectCheckValid((prev) => ({ ...prev, validPhoneNumber: false }));
     return false;
   }
 

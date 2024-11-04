@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import "./Register.scss";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { validateRegister } from "../Validate/Validate";
 
@@ -18,20 +18,30 @@ function Register() {
     phoneNumber: "",
   });
 
+  const [objCheckValid, setObjectCheckValid] = useState({
+    validUsername: true,
+    validEmail: true,
+    validPassword: true,
+    validConfirmPassword: true,
+    validGender: true,
+    validAddress: true,
+    validPhoneNumber: true,
+  });
+
   const handleLogin = () => {
     navigate("/register");
   };
 
   const handleRegister = () => {
-    let checkValidInput = validateRegister(dataRegister);
-    console.log("check data >>>> ", checkValidInput);
+    let checkValidInput = validateRegister(dataRegister, setObjectCheckValid);
+    if (checkValidInput) {
+      axios
+        .post("http://localhost:8080/api/v1/register", dataRegister)
+        .then((data) => {
+          console.log(data);
+        });
+    }
   };
-
-  useEffect(() => {
-    // axios.get("http://localhost:8080/api/test-api").then((data) => {
-    //   console.log(data);
-    // });
-  }, []);
 
   return (
     <div className="register-container">
@@ -55,7 +65,11 @@ function Register() {
                 <label for="username">Username:</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={
+                    objCheckValid.validUsername
+                      ? "form-control"
+                      : "form-control is-invalid"
+                  }
                   id="username"
                   placeholder="Enter username"
                   value={dataRegister.username}
@@ -71,7 +85,11 @@ function Register() {
                 <label for="email">Email:</label>
                 <input
                   type="email"
-                  className="form-control"
+                  className={
+                    objCheckValid.validEmail
+                      ? "form-control"
+                      : "form-control is-invalid"
+                  }
                   id="email"
                   placeholder="Enter email"
                   value={dataRegister.email}
@@ -87,7 +105,11 @@ function Register() {
                 <label for="password">Password:</label>
                 <input
                   type="password"
-                  className="form-control"
+                  className={
+                    objCheckValid.validPassword
+                      ? "form-control"
+                      : "form-control is-invalid"
+                  }
                   id="password"
                   placeholder="Enter password"
                   value={dataRegister.password}
@@ -103,7 +125,11 @@ function Register() {
                 <label for="confirm">Confirm Password:</label>
                 <input
                   type="password"
-                  className="form-control"
+                  className={
+                    objCheckValid.validConfirmPassword
+                      ? "form-control"
+                      : "form-control is-invalid"
+                  }
                   id="confirm"
                   placeholder="Confirm-Password"
                   value={dataRegister.confirmPassword}
@@ -176,7 +202,11 @@ function Register() {
                 <label for="address">Address:</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={
+                    objCheckValid.validAddress
+                      ? "form-control"
+                      : "form-control is-invalid"
+                  }
                   id="address"
                   placeholder="Enter address"
                   value={dataRegister.address}
@@ -192,7 +222,11 @@ function Register() {
                 <label for="Phone">Phone number:</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={
+                    objCheckValid.validPhoneNumber
+                      ? "form-control"
+                      : "form-control is-invalid"
+                  }
                   id="Phone"
                   placeholder="Enter Phone number"
                   value={dataRegister.phoneNumber}
