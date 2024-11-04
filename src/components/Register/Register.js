@@ -3,6 +3,7 @@ import "./Register.scss";
 import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 import { useEffect, useState } from "react";
+import { validateRegister } from "../Validate/Validate";
 
 function Register() {
   let navigate = useNavigate();
@@ -22,7 +23,8 @@ function Register() {
   };
 
   const handleRegister = () => {
-    console.log("check data >>>> ", dataRegister);
+    let checkValidInput = validateRegister(dataRegister);
+    console.log("check data >>>> ", checkValidInput);
   };
 
   useEffect(() => {
@@ -56,7 +58,6 @@ function Register() {
                   className="form-control"
                   id="username"
                   placeholder="Enter username"
-                  required
                   value={dataRegister.username}
                   onChange={(e) =>
                     setDataRegister((prevState) => ({
@@ -73,7 +74,6 @@ function Register() {
                   className="form-control"
                   id="email"
                   placeholder="Enter email"
-                  required
                   value={dataRegister.email}
                   onChange={(e) =>
                     setDataRegister((prevState) => ({
@@ -90,7 +90,6 @@ function Register() {
                   className="form-control"
                   id="password"
                   placeholder="Enter password"
-                  required
                   value={dataRegister.password}
                   onChange={(e) =>
                     setDataRegister((prevState) => ({
@@ -107,7 +106,6 @@ function Register() {
                   className="form-control"
                   id="confirm"
                   placeholder="Confirm-Password"
-                  required
                   value={dataRegister.confirmPassword}
                   onChange={(e) =>
                     setDataRegister((prevState) => ({
@@ -181,7 +179,6 @@ function Register() {
                   className="form-control"
                   id="address"
                   placeholder="Enter address"
-                  required
                   value={dataRegister.address}
                   onChange={(e) =>
                     setDataRegister((prevState) => ({
@@ -198,7 +195,6 @@ function Register() {
                   className="form-control"
                   id="Phone"
                   placeholder="Enter Phone number"
-                  required
                   value={dataRegister.phoneNumber}
                   onChange={(e) =>
                     setDataRegister((prevState) => ({
@@ -231,8 +227,9 @@ function Register() {
                 . You may receive SMS notifications from us and can opt out at
                 any time.
               </div>
+            </form>
+            <div className="d-flex flex-column align-items-center">
               <button
-                type="submit"
                 className="btn btn-register text-white fw-bold fs-5 my-3"
                 onClick={() => handleRegister()}
               >
@@ -246,7 +243,7 @@ function Register() {
                   Already have an account?
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
