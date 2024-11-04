@@ -1,0 +1,38 @@
+.register-container {
+  min-height: 100%;
+  background-color: #f0f2f5;
+
+  .form {
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 8px 16px rgba(0, 0, 0, 0.1);
+
+    .form-group {
+      width: 100%;
+      padding: 6px 8px;
+    }
+  }
+
+  .btn-register {
+    background-color: #42b72a;
+    line-height: 32px;
+    padding: 0 52px;
+  }
+
+  .link-more {
+    text-decoration: none;
+    color: #385898;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .already-account {
+    text-decoration: none;
+    color: #1877f2;
+
+    &:hover {
+      color: #1877f2;
+    }
+  }
+}

@@ -1,9 +1,17 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
+import { useNavigate } from "react-router-dom";
+
 import "./Login.scss";
 
 const Login = () => {
+  let navigate = useNavigate();
+
+  const handleCreateNewAccount = () => {
+    navigate("/register");
+  };
+
   return (
     <div className="login-container">
       <div className="container">
@@ -44,7 +52,10 @@ const Login = () => {
                 </div>
                 <hr />
                 <div className="text-center">
-                  <button className="btn btn-login text-white fw-bold fs-4">
+                  <button
+                    className="btn btn-login text-white fw-bold fs-4"
+                    onClick={() => handleCreateNewAccount()}
+                  >
                     Create new account
                   </button>
                 </div>
