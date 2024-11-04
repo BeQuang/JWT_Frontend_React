@@ -1,12 +1,35 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import "./Register.scss";
 import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Register() {
   let navigate = useNavigate();
 
+  const [dataRegister, setDataRegister] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    gender: "",
+    address: "",
+    phoneNumber: "",
+  });
+
   const handleLogin = () => {
     navigate("/register");
   };
+
+  const handleRegister = () => {
+    console.log("check data >>>> ", dataRegister);
+  };
+
+  useEffect(() => {
+    // axios.get("http://localhost:8080/api/test-api").then((data) => {
+    //   console.log(data);
+    // });
+  }, []);
 
   return (
     <div className="register-container">
@@ -34,6 +57,13 @@ function Register() {
                   id="username"
                   placeholder="Enter username"
                   required
+                  value={dataRegister.username}
+                  onChange={(e) =>
+                    setDataRegister((prevState) => ({
+                      ...prevState,
+                      username: e.target.value,
+                    }))
+                  }
                 />
               </div>
               <div className="form-group">
@@ -44,63 +74,102 @@ function Register() {
                   id="email"
                   placeholder="Enter email"
                   required
+                  value={dataRegister.email}
+                  onChange={(e) =>
+                    setDataRegister((prevState) => ({
+                      ...prevState,
+                      email: e.target.value,
+                    }))
+                  }
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <label for="password">Password:</label>
                 <input
                   type="password"
-                  class="form-control"
+                  className="form-control"
                   id="password"
                   placeholder="Enter password"
                   required
+                  value={dataRegister.password}
+                  onChange={(e) =>
+                    setDataRegister((prevState) => ({
+                      ...prevState,
+                      password: e.target.value,
+                    }))
+                  }
                 />
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <label for="confirm">Confirm Password:</label>
                 <input
                   type="password"
-                  class="form-control"
+                  className="form-control"
                   id="confirm"
                   placeholder="Confirm-Password"
                   required
+                  value={dataRegister.confirmPassword}
+                  onChange={(e) =>
+                    setDataRegister((prevState) => ({
+                      ...prevState,
+                      confirmPassword: e.target.value,
+                    }))
+                  }
                 />
               </div>
               <div className="form-group d-flex justify-content-between py-2">
                 <label>Gender:</label>
-                <div class="form-check">
+                <div className="form-check">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     type="radio"
                     name="exampleRadios"
                     id="Male"
-                    value="male"
+                    value={dataRegister.gender}
+                    onChange={(e) =>
+                      setDataRegister((prevState) => ({
+                        ...prevState,
+                        gender: "male",
+                      }))
+                    }
                   />
-                  <label class="form-check-label" for="Male">
+                  <label className="form-check-label" for="Male">
                     Male
                   </label>
                 </div>
-                <div class="form-check">
+                <div className="form-check">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     type="radio"
                     name="exampleRadios"
                     id="FeMale"
-                    value="female"
+                    value={dataRegister.gender}
+                    onChange={(e) =>
+                      setDataRegister((prevState) => ({
+                        ...prevState,
+                        gender: "feMale",
+                      }))
+                    }
                   />
-                  <label class="form-check-label" for="FeMale">
+                  <label className="form-check-label" for="FeMale">
                     FeMale
                   </label>
                 </div>
-                <div class="form-check">
+                <div className="form-check">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     type="radio"
                     name="exampleRadios"
                     id="Other"
-                    value="female"
+                    value={dataRegister.gender}
+                    onChange={(e) =>
+                      setDataRegister((prevState) => ({
+                        ...prevState,
+                        gender: "other",
+                      }))
+                    }
                   />
-                  <label class="form-check-label" for="Other">
+                  <label className="form-check-label" for="Other">
                     Other
                   </label>
                 </div>
@@ -113,6 +182,13 @@ function Register() {
                   id="address"
                   placeholder="Enter address"
                   required
+                  value={dataRegister.address}
+                  onChange={(e) =>
+                    setDataRegister((prevState) => ({
+                      ...prevState,
+                      address: e.target.value,
+                    }))
+                  }
                 />
               </div>
               <div className="form-group">
@@ -123,6 +199,13 @@ function Register() {
                   id="Phone"
                   placeholder="Enter Phone number"
                   required
+                  value={dataRegister.phoneNumber}
+                  onChange={(e) =>
+                    setDataRegister((prevState) => ({
+                      ...prevState,
+                      phoneNumber: e.target.value,
+                    }))
+                  }
                 />
               </div>
               <div className="form-group">
@@ -151,6 +234,7 @@ function Register() {
               <button
                 type="submit"
                 className="btn btn-register text-white fw-bold fs-5 my-3"
+                onClick={() => handleRegister()}
               >
                 Sign up
               </button>
