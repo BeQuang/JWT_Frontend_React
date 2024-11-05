@@ -60,4 +60,27 @@ const validateRegister = (dataRegister, setObjectCheckValid) => {
   return true;
 };
 
-export { validateRegister };
+const validateLogin = (
+  valueLogin,
+  passwordLogin,
+  setCheckValidValueLogin,
+  setCheckValidPassword
+) => {
+  setCheckValidValueLogin(true);
+  setCheckValidPassword(true);
+
+  if (!valueLogin) {
+    toast.error("Please enter your email or phone number");
+    setCheckValidValueLogin(false);
+    return false;
+  }
+  if (!passwordLogin) {
+    toast.error("Please enter your password");
+    setCheckValidPassword(false);
+    return false;
+  }
+
+  return true;
+};
+
+export { validateRegister, validateLogin };

@@ -4,12 +4,37 @@
 import { useNavigate } from "react-router-dom";
 
 import "./Login.scss";
+import { useState } from "react";
+import { validateLogin } from "../Validate/Validate";
+import { toast } from "react-toastify";
+import { loginUser } from "../../services/userService";
 
 const Login = () => {
   let navigate = useNavigate();
 
+  const [valueLogin, setValueLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [checkValidValueLogin, setCheckValidValueLogin] = useState(true);
+  const [checkValidPassword, setCheckValidPassword] = useState(true);
+
   const handleCreateNewAccount = () => {
     navigate("/register");
+  };
+
+  const handleLogin = async () => {
+    let checkValidLogin = validateLogin(
+      valueLogin,
+      password,
+      setCheckValidValueLogin,
+      setCheckValidPassword
+    );
+
+    if (checkValidLogin) {
+      let response = await loginUser(valueLogin, password);
+      console.log(response);
+      toast.success("Success");
+      // navigate("/home");
+    }
   };
 
   return (
@@ -36,15 +61,30 @@ const Login = () => {
               <div className="d-flex flex-column gap-3 py-3 w-90">
                 <input
                   type="text"
-                  className="form-control pt-3 pb-3"
+                  className={
+                    checkValidValueLogin
+                      ? "form-control pt-3 pb-3"
+                      : "form-control is-invalid pt-3 pb-3"
+                  }
                   placeholder="Email address or phone number"
+                  value={valueLogin}
+                  onChange={(e) => setValueLogin(e.target.value)}
                 />
                 <input
                   type="password"
-                  className="form-control pt-3 pb-3"
+                  className={
+                    checkValidPassword
+                      ? "form-control pt-3 pb-3"
+                      : "form-control is-invalid pt-3 pb-3"
+                  }
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="btn btn-primary pt-3 pb-3 fs-4 fw-bold">
+                <button
+                  className="btn btn-primary pt-3 pb-3 fs-4 fw-bold"
+                  onClick={() => handleLogin()}
+                >
                   Login
                 </button>
                 <div className="text-center color-blue">
