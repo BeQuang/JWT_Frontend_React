@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import "./Register.scss";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { validateRegister } from "../Validate/Validate";
+import { registerNewUser } from "../../services/userService";
+import { toast } from "react-toastify";
 
 function Register() {
   let navigate = useNavigate();
@@ -32,14 +33,17 @@ function Register() {
     navigate("/register");
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     let checkValidInput = validateRegister(dataRegister, setObjectCheckValid);
+
     if (checkValidInput) {
-      axios
-        .post("http://localhost:8080/api/v1/register", dataRegister)
-        .then((data) => {
-          console.log(data);
-        });
+      let response = await registerNewUser(dataRegister);
+      if (+response.data.EC === 0) {
+        toast.success(response.data.EM);
+        navigate("/login");
+      } else {
+        toast.error(response.data.EM);
+      }
     }
   };
 
