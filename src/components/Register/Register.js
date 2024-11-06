@@ -38,7 +38,7 @@ function Register() {
 
     if (checkValidInput) {
       let response = await registerNewUser(dataRegister);
-      if (+response.data.EC === 0) {
+      if (response && response.data && +response.data.EC === 0) {
         toast.success(response.data.EM);
         navigate("/login");
       } else {

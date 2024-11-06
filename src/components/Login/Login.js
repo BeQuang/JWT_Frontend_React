@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
+import { useState } from "react";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import "./Login.scss";
-import { useState } from "react";
 import { validateLogin } from "../Validate/Validate";
-import { toast } from "react-toastify";
 import { loginUser } from "../../services/userService";
+
+import "./Login.scss";
 
 const Login = () => {
   let navigate = useNavigate();
@@ -31,9 +32,17 @@ const Login = () => {
 
     if (checkValidLogin) {
       let response = await loginUser(valueLogin, password);
-      console.log(response);
-      toast.success("Success");
-      // navigate("/home");
+      if (response && response.data && +response.data.EC === 0) {
+        let data = {
+          isAuthenticated: true,
+          token: "fake token",
+        };
+        sessionStorage.setItem("account", JSON.stringify(data));
+        toast.success(response.data.EM);
+        navigate("/users");
+      } else {
+        toast.error(response.data.EM);
+      }
     }
   };
 
