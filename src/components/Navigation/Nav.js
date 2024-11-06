@@ -5,10 +5,9 @@ function Nav() {
   return (
     <div>
       <div className="topnav">
-        <NavLink to="/users">Home</NavLink>
-        <NavLink to="/news">News</NavLink>
-        <NavLink to="/contact">Contact</NavLink>
-        <NavLink to="/about">About</NavLink>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/users">Users</NavLink>
+        <NavLink to="/projects">Projects</NavLink>
       </div>
       <Outlet />
     </div>

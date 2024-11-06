@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -46,6 +46,19 @@ const Login = () => {
     }
   };
 
+  const handleOnKeyDown = (e) => {
+    if (e.keyCode === 13 && e.code === "Enter") {
+      handleLogin();
+    }
+  };
+
+  useEffect(() => {
+    let session = sessionStorage.getItem("account");
+    if (session) {
+      navigate("/");
+    }
+  });
+
   return (
     <div className="login-container">
       <div className="container">
@@ -89,6 +102,7 @@ const Login = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => handleOnKeyDown(e)}
                 />
                 <button
                   className="btn btn-primary pt-3 pb-3 fs-4 fw-bold"
