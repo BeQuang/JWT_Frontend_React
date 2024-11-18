@@ -15,6 +15,7 @@ function Users() {
   const [totalPages, setTotalPages] = useState(0);
 
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+  const [isShowModalUser, setIsShowModalUser] = useState(false);
   const [dataModal, setDataModal] = useState({});
 
   useEffect(() => {
@@ -47,6 +48,10 @@ function Users() {
     setIsShowModalDelete(false);
   };
 
+  const onHideModalUser = () => {
+    setIsShowModalUser(false);
+  };
+
   const confirmDeleteUser = async () => {
     let response = await deleteUser(dataModal);
     console.log("check response >>>> ", response);
@@ -68,7 +73,12 @@ function Users() {
               </div>
               <div className="action">
                 <button className="btn btn-success">Refresh</button>
-                <button className="btn btn-primary">Add new user</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setIsShowModalUser(true)}
+                >
+                  Add new user
+                </button>
               </div>
             </div>
 
@@ -153,7 +163,7 @@ function Users() {
         user={dataModal}
       />
 
-      <ModalUser />
+      <ModalUser show={isShowModalUser} handleClose={onHideModalUser} />
     </>
   );
 }

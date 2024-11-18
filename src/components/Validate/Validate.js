@@ -83,4 +83,38 @@ const validateLogin = (
   return true;
 };
 
-export { validateRegister, validateLogin };
+const validateCreateNewUser = (dataCreateNewUser, setObjectCheckValid) => {
+  const defaultValid = {
+    validUsername: true,
+    validEmail: true,
+    validPassword: true,
+    validPhoneNumber: true,
+  };
+
+  setObjectCheckValid(defaultValid);
+
+  if (!dataCreateNewUser.username) {
+    toast.error("Username is required");
+    setObjectCheckValid((prev) => ({ ...prev, validUsername: false }));
+    return false;
+  }
+  if (!validateEmail(dataCreateNewUser.email)) {
+    toast.error("Please enter a valid email");
+    setObjectCheckValid((prev) => ({ ...prev, validEmail: false }));
+    return false;
+  }
+  if (!dataCreateNewUser.password) {
+    toast.error("Password is required");
+    setObjectCheckValid((prev) => ({ ...prev, validPassword: false }));
+    return false;
+  }
+  if (!dataCreateNewUser.phoneNumber) {
+    toast.error("PhoneNumber is required");
+    setObjectCheckValid((prev) => ({ ...prev, validPhoneNumber: false }));
+    return false;
+  }
+
+  return true;
+};
+
+export { validateRegister, validateLogin, validateCreateNewUser };
