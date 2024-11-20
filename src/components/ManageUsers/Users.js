@@ -7,11 +7,12 @@ import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import ModalDelete from "./ModalDelete";
 import ModalUser from "./ModalUser";
+import "./Users.scss";
 
 function Users() {
   const [listUsers, setListUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentLimit, setCurrentLimit] = useState(5);
+  const [currentLimit, setCurrentLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
   // DataModal Delete
@@ -39,6 +40,11 @@ function Users() {
   // Invoke when user click to request another page.
   const handlePageClick = async (event) => {
     setCurrentPage(+event.selected + 1);
+  };
+
+  const handleRefresh = async () => {
+    setCurrentPage(1);
+    await fetchUsers();
   };
 
   const handleDeleteUser = (user) => {
@@ -84,21 +90,28 @@ function Users() {
         <div className="container">
           <div className="row">
             <div className="user-header">
-              <div className="title">
-                <h3>Table Users</h3>
+              <div className="title my-4">
+                <h3>Manage Users</h3>
               </div>
-              <div className="action">
-                <button className="btn btn-success">Refresh</button>
+              <div className="action mb-4">
+                <button
+                  className="btn btn-success refresh"
+                  onClick={() => handleRefresh()}
+                >
+                  <i className="fa fa-refresh" />
+                  Refresh
+                </button>
                 <button
                   className="btn btn-primary"
                   onClick={() => handleAddNewUser()}
                 >
+                  <i className="fa fa-plus"></i>
                   Add new user
                 </button>
               </div>
             </div>
 
-            <div className="user-body">
+            <div className="user-body mb-2">
               <table className="table table-hover table-bordered table-striped">
                 <thead>
                   <tr>
@@ -126,18 +139,20 @@ function Users() {
                             <td>{user?.phone}</td>
                             <td>{user?.Group?.name}</td>
                             <td>
-                              <button
-                                className="btn btn-warning mx-3"
+                              <span
+                                title="Edit"
+                                className="edit"
                                 onClick={() => handleEditUser(user)}
                               >
-                                Edit
-                              </button>
-                              <button
-                                className="btn btn-danger"
+                                <i className="fa fa-pencil" />
+                              </span>
+                              <span
+                                title="Delete"
+                                className="delete"
                                 onClick={() => handleDeleteUser(user)}
                               >
-                                Delete
-                              </button>
+                                <i className="fa fa-trash" />
+                              </span>
                             </td>
                           </tr>
                         );
@@ -152,7 +167,7 @@ function Users() {
               </table>
             </div>
             {totalPages > 0 && (
-              <div className="user-footer">
+              <div className="user-footer d-flex justify-content-center">
                 <ReactPaginate
                   nextLabel="next >"
                   onPageChange={handlePageClick}
@@ -172,6 +187,7 @@ function Users() {
                   containerClassName="pagination"
                   activeClassName="active"
                   renderOnZeroPageCount={null}
+                  forcePage={currentPage - 1}
                 />
               </div>
             )}
