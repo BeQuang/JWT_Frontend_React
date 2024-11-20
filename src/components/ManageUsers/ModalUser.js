@@ -2,7 +2,11 @@
 /* eslint-disable no-unused-vars */
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { fetchAllGroups, createNewUser } from "../../services/userService";
+import {
+  fetchAllGroups,
+  createNewUser,
+  updateCurrentUser,
+} from "../../services/userService";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
@@ -74,7 +78,14 @@ function ModalUser({ show, handleClose, action, dataModalUser }) {
   };
 
   const handleCreateNewUser = async () => {
-    let checkValidInput = validateCreateNewUser(userData, setObjectCheckValid);
+    let checkValidInput = false;
+    if (action === "UPDATE") {
+      console.log("UPDATE");
+      checkValidInput = true;
+    } else if (action === "CREATE") {
+      console.log("CREATE");
+      checkValidInput = validateCreateNewUser(userData, setObjectCheckValid);
+    }
 
     if (checkValidInput) {
       let dataCreateNewUser = {
@@ -84,15 +95,20 @@ function ModalUser({ show, handleClose, action, dataModalUser }) {
         groupId: userData["role"],
       };
 
-      console.log(userData);
       console.log(dataCreateNewUser);
 
-      let response = await createNewUser(dataCreateNewUser);
+      let response =
+        action === "CREATE"
+          ? await createNewUser(dataCreateNewUser)
+          : await updateCurrentUser(dataCreateNewUser);
 
       if (response && response.data && +response.data.EC === 0) {
         toast.success(response.data.EM);
         handleClose();
-        setUserData({ ...userDataDefault, role: userGroups[0].id });
+        setUserData({
+          ...userDataDefault,
+          role: userGroups && userGroups.length > 0 ? userGroups[0].id : "",
+        });
       } else {
         toast.error(response.data.EM);
         let _validInputs = _.cloneDeep(checkValidDefault);

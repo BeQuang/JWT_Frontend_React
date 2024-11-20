@@ -31,8 +31,6 @@ function Users() {
     let response = await fetchAllUsers(currentPage, currentLimit);
 
     if (response && response.data && response.data.EC === 0) {
-      console.log(response.data.DT);
-
       setTotalPages(response.data.DT.totalPages);
       setListUsers(response.data.DT.users);
     }
