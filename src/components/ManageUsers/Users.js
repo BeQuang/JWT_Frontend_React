@@ -11,12 +11,17 @@ import ModalUser from "./ModalUser";
 function Users() {
   const [listUsers, setListUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentLimit, setCurrentLimit] = useState(2);
+  const [currentLimit, setCurrentLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
 
+  // DataModal Delete
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+  const [dataModalDelete, setDataModalDelete] = useState({});
+
+  // DataModal User
+  const [actionModalUser, setActionModalUser] = useState("");
   const [isShowModalUser, setIsShowModalUser] = useState(false);
-  const [dataModal, setDataModal] = useState({});
+  const [dataModalUser, setDataModalUser] = useState({});
 
   useEffect(() => {
     fetchUsers();
@@ -39,21 +44,34 @@ function Users() {
   };
 
   const handleDeleteUser = (user) => {
-    setDataModal(user);
+    setDataModalDelete(user);
     setIsShowModalDelete(true);
   };
 
+  const handleEditUser = (user) => {
+    setDataModalUser(user);
+    setActionModalUser("UPDATE");
+    setIsShowModalUser(true);
+  };
+
+  const handleAddNewUser = () => {
+    setActionModalUser("CREATE");
+    setIsShowModalUser(true);
+  };
+
   const handleClose = (user) => {
-    setDataModal({});
+    setDataModalDelete({});
     setIsShowModalDelete(false);
   };
 
-  const onHideModalUser = () => {
+  const onHideModalUser = async () => {
     setIsShowModalUser(false);
+    setDataModalUser({});
+    await fetchUsers();
   };
 
   const confirmDeleteUser = async () => {
-    let response = await deleteUser(dataModal);
+    let response = await deleteUser(dataModalDelete);
     console.log("check response >>>> ", response);
     if (response && response.data && response.data.EC === 0) {
       toast.success(response.data.EM);
@@ -75,7 +93,7 @@ function Users() {
                 <button className="btn btn-success">Refresh</button>
                 <button
                   className="btn btn-primary"
-                  onClick={() => setIsShowModalUser(true)}
+                  onClick={() => handleAddNewUser()}
                 >
                   Add new user
                 </button>
@@ -86,6 +104,7 @@ function Users() {
               <table className="table table-hover table-bordered table-striped">
                 <thead>
                   <tr>
+                    <th scope="col">NO</th>
                     <th scope="col">ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
@@ -100,13 +119,19 @@ function Users() {
                       {listUsers.map((user, index) => {
                         return (
                           <tr key={`row-${index + 1}`}>
-                            <th scope="row">{user.id}</th>
+                            <td>
+                              {(currentPage - 1) * currentLimit + index + 1}
+                            </td>
+                            <td>{user.id}</td>
                             <td>{user?.username}</td>
                             <td>{user?.email}</td>
                             <td>{user?.phone}</td>
                             <td>{user?.Group?.name}</td>
                             <td>
-                              <button className="btn btn-warning mx-3">
+                              <button
+                                className="btn btn-warning mx-3"
+                                onClick={() => handleEditUser(user)}
+                              >
                                 Edit
                               </button>
                               <button
@@ -160,10 +185,15 @@ function Users() {
         show={isShowModalDelete}
         handleClose={handleClose}
         confirmDeleteUser={confirmDeleteUser}
-        user={dataModal}
+        user={dataModalDelete}
       />
 
-      <ModalUser show={isShowModalUser} handleClose={onHideModalUser} />
+      <ModalUser
+        show={isShowModalUser}
+        handleClose={onHideModalUser}
+        action={actionModalUser}
+        dataModalUser={dataModalUser}
+      />
     </>
   );
 }

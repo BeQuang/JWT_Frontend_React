@@ -2,7 +2,6 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function ModalDelete({ show, handleClose, confirmDeleteUser, user }) {
-  console.log("show >>>>", show);
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>

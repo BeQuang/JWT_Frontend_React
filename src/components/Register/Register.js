@@ -30,7 +30,7 @@ function Register() {
   });
 
   const handleLogin = () => {
-    navigate("/register");
+    navigate("/login");
   };
 
   const handleRegister = async () => {
