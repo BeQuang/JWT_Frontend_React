@@ -60,14 +60,14 @@ function ModalUser({ show, handleClose, action, dataModalUser }) {
 
   const fetchGroups = async () => {
     const response = await fetchAllGroups();
-    if (response && response.data && response.data.EC === 0) {
-      setUserGroups(response.data.DT);
-      if (response.data.DT && response.data.DT.length > 0) {
-        let groups = response.data.DT;
+    if (response && response.EC === 0) {
+      setUserGroups(response.DT);
+      if (response.DT && response.DT.length > 0) {
+        let groups = response.DT;
         setUserData({ ...userData, role: groups[0].id });
       }
     } else {
-      toast.error(response.data.EM);
+      toast.error(response.EM);
     }
   };
 
@@ -102,17 +102,17 @@ function ModalUser({ show, handleClose, action, dataModalUser }) {
           ? await createNewUser(dataCreateNewUser)
           : await updateCurrentUser(dataCreateNewUser);
 
-      if (response && response.data && +response.data.EC === 0) {
-        toast.success(response.data.EM);
+      if (response && +response.EC === 0) {
+        toast.success(response.EM);
         handleClose();
         setUserData({
           ...userDataDefault,
           role: userGroups && userGroups.length > 0 ? userGroups[0].id : "",
         });
       } else {
-        toast.error(response.data.EM);
+        toast.error(response.EM);
         let _validInputs = _.cloneDeep(checkValidDefault);
-        _validInputs[response.data.DT] = false;
+        _validInputs[response.DT] = false;
         setObjectCheckValid(_validInputs);
       }
     }

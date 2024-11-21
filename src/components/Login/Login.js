@@ -32,16 +32,16 @@ const Login = () => {
 
     if (checkValidLogin) {
       let response = await loginUser(valueLogin, password);
-      if (response && response.data && +response.data.EC === 0) {
+      if (response && +response.EC === 0) {
         let data = {
           isAuthenticated: true,
           token: "fake token",
         };
         sessionStorage.setItem("account", JSON.stringify(data));
-        toast.success(response.data.EM);
+        toast.success(response.EM);
         navigate("/users");
       } else {
-        toast.error(response.data.EM);
+        toast.error(response.EM);
       }
     }
   };

@@ -38,11 +38,11 @@ function Register() {
 
     if (checkValidInput) {
       let response = await registerNewUser(dataRegister);
-      if (response && response.data && +response.data.EC === 0) {
-        toast.success(response.data.EM);
+      if (response && +response.EC === 0) {
+        toast.success(response.EM);
         navigate("/login");
       } else {
-        toast.error(response.data.EM);
+        toast.error(response.EM);
       }
     }
   };
