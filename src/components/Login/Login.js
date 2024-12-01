@@ -47,8 +47,6 @@ const Login = () => {
           account: { groupWithRoles, email, username },
         };
 
-        sessionStorage.setItem("account", JSON.stringify(data));
-
         loginContext(data);
 
         toast.success(response.EM);
@@ -64,13 +62,6 @@ const Login = () => {
       handleLogin();
     }
   };
-
-  useEffect(() => {
-    let session = sessionStorage.getItem("account");
-    if (session) {
-      navigate("/");
-    }
-  });
 
   return (
     <div className="login-container">

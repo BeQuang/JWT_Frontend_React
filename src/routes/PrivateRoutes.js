@@ -1,21 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 function PrivateRoutes({ children }) {
-  let navigate = useNavigate();
   const { user } = useContext(UserContext);
 
-  useEffect(() => {
-    console.log(">>>> check context user: ", user);
-    let session = sessionStorage.getItem("account");
-    if (!session) {
-      navigate("/login");
-    }
-  }, []);
-
-  return <>{children}</>;
+  if (user && user.isAuthenticated === true) {
+    return <>{children}</>;
+  } else {
+    return <Navigate to="/login" replace />;
+  }
 }
 
 export default PrivateRoutes;
