@@ -1,17 +1,20 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 import { validateLogin } from "../Validate/Validate";
 import { loginUser } from "../../services/userService";
+import { UserContext } from "../../context/UserContext";
 
 import "./Login.scss";
 
 const Login = () => {
   let navigate = useNavigate();
+
+  const { loginContext } = useContext(UserContext);
 
   const [valueLogin, setValueLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -33,11 +36,21 @@ const Login = () => {
     if (checkValidLogin) {
       let response = await loginUser(valueLogin, password);
       if (response && +response.EC === 0) {
+        let groupWithRoles = response.DT.groupWithRoles;
+        let email = response.DT.email;
+        let username = response.DT.username;
+        let token = response.DT.access_token;
+
         let data = {
           isAuthenticated: true,
-          token: "fake token",
+          token,
+          account: { groupWithRoles, email, username },
         };
+
         sessionStorage.setItem("account", JSON.stringify(data));
+
+        loginContext(data);
+
         toast.success(response.EM);
         navigate("/users");
       } else {
