@@ -53,7 +53,6 @@ const UserProvider = ({ children }) => {
       window.location.pathname !== "/" ||
       window.location.pathname !== "/login"
     ) {
-      alert("Please enter");
       fetchUser();
     }
   }, []);

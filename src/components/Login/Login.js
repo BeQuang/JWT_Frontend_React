@@ -47,6 +47,7 @@ const Login = () => {
           account: { groupWithRoles, email, username },
         };
 
+        localStorage.setItem("jwt", token);
         loginContext(data);
 
         toast.success(response.EM);
