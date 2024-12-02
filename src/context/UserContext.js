@@ -5,16 +5,17 @@ const UserContext = React.createContext(null);
 
 const UserProvider = ({ children }) => {
   // User is the name of the "data" that gets stored in context
-
-  const [user, setUser] = useState({
+  const userDefaults = {
+    isLoading: true,
     isAuthenticated: false,
     token: "",
     account: {},
-  });
+  };
+  const [user, setUser] = useState(userDefaults);
 
   // Login updates the user data with a name parameter
   const loginContext = (userData) => {
-    setUser(userData);
+    setUser({ ...userData, isLoading: false });
   };
 
   // Logout updates the user data to default
@@ -37,14 +38,24 @@ const UserProvider = ({ children }) => {
         isAuthenticated: true,
         token,
         account: { groupWithRoles, email, username },
+        isLoading: false,
       };
 
       setUser(data);
+    } else {
+      setUser({ ...userDefaults, isLoading: false });
     }
   };
 
   useEffect(() => {
-    fetchUser();
+    console.log(window.location.pathname);
+    if (
+      window.location.pathname !== "/" ||
+      window.location.pathname !== "/login"
+    ) {
+      alert("Please enter");
+      fetchUser();
+    }
   }, []);
 
   return (
