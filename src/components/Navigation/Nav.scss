@@ -22,3 +22,45 @@
     color: white;
   }
 }
+
+.nav-header {
+  .brand {
+    color: #61dafb;
+  }
+
+  .navbar-brand {
+    img{
+      animation: App-logo-spin infinite 20s linear;
+    }
+
+    @keyframes App-logo-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  }
+
+  .bg-header {
+    background-color: #20232a;
+  }
+
+  a, .nav-link {
+    color: white !important;
+
+    &:hover {
+      color: #61dafb !important;
+    }
+  }
+
+  .nav-link {
+    &.active {
+      color: #61dafb !important;
+      border-bottom: #61dafb 1px solid !important;
+    }
+  }
+
+  .dropdown-menu {
+    a {
+      color: #212529 !important;
+    }
+  }
+}

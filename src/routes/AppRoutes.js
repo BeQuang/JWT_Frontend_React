@@ -1,5 +1,5 @@
 import Login from "../components/Login/Login";
-import Nav from "../components/Navigation/Nav";
+import NavHeader from "../components/Navigation/NavHeader";
 import Users from "../components/ManageUsers/Users";
 import Register from "../components/Register/Register";
 import { Routes, Route } from "react-router-dom";
@@ -13,7 +13,7 @@ function AppRoutes() {
           path="/"
           element={
             <PrivateRoutes>
-              <Nav />
+              <NavHeader />
             </PrivateRoutes>
           }
         >

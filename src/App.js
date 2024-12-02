@@ -6,7 +6,7 @@ import { ThreeCircles } from "react-loader-spinner";
 import "./App.scss";
 import "react-toastify/dist/ReactToastify.css";
 import AppRoutes from "./routes/AppRoutes";
-import Nav from "./components/Navigation/Nav";
+import NavHeader from "./components/Navigation/NavHeader";
 import { useContext } from "react";
 import { UserContext } from "./context/UserContext";
 
@@ -31,7 +31,7 @@ function App() {
         ) : (
           <div className="app-container">
             <AppRoutes />
-            {!user.isAuthenticated ? <Nav /> : <></>}
+            {!user.isAuthenticated ? <NavHeader /> : <></>}
           </div>
         )}
       </Router>
