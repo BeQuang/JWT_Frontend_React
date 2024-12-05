@@ -3,24 +3,29 @@ import React, { useEffect, useState } from "react";
 import "./Role.scss";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
+import { createRoles } from "../../services/roleService";
 
 function Role() {
+  const dataChildDefault = { url: "", description: "", isValidUrl: true };
+
   const [listChilds, setListChilds] = useState({
-    child1: { url: "", description: "" },
+    child1: dataChildDefault,
   });
 
   const handleOnchangeInput = (name, value, key) => {
     let _listChilds = _.cloneDeep(listChilds);
     _listChilds[key][name] = value;
+
+    if (value && name === "url") {
+      _listChilds[key]["isValidUrl"] = true;
+    }
     setListChilds(_listChilds);
   };
 
   const handleAddNewInput = () => {
     let _listChilds = _.cloneDeep(listChilds);
-    _listChilds[`child-${uuidv4()}`] = {
-      url: "",
-      description: "",
-    };
+    _listChilds[`child-${uuidv4()}`] = dataChildDefault;
     setListChilds(_listChilds);
   };
 
@@ -28,6 +33,45 @@ function Role() {
     let _listChilds = _.cloneDeep(listChilds);
     delete _listChilds[key];
     setListChilds(_listChilds);
+  };
+
+  const buildDataToPersist = () => {
+    let _listChilds = _.cloneDeep(listChilds);
+    let dataToPersist = [];
+
+    Object.entries(_listChilds).forEach(([key, child]) => {
+      dataToPersist.push({
+        url: child.url,
+        description: child.description,
+      });
+    });
+    return dataToPersist;
+  };
+
+  const handleSave = async () => {
+    let invalidObj = Object.entries(listChilds).find(([key, child], index) => {
+      return child && !child.url;
+    });
+
+    if (!invalidObj) {
+      let data = buildDataToPersist();
+      let response = await createRoles(data);
+
+      if (response && response.EC === 0) {
+        toast.success(response.EM);
+        setListChilds({
+          child1: dataChildDefault,
+        });
+      }
+    } else {
+      const key = invalidObj[0];
+
+      let _listChilds = _.cloneDeep(listChilds);
+      _listChilds[key]["isValidUrl"] = false;
+      setListChilds(_listChilds);
+
+      toast.error("Please input URL for all roles.");
+    }
   };
 
   return (
@@ -45,7 +89,11 @@ function Role() {
                     <label>URL:</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={
+                        child.isValidUrl
+                          ? "form-control"
+                          : "form-control is-invalid"
+                      }
                       value={child.url}
                       onChange={(e) =>
                         handleOnchangeInput("url", e.target.value, key)
@@ -80,7 +128,12 @@ function Role() {
             })}
 
             <div>
-              <button className="btn btn-info mt-3">Save</button>
+              <button
+                className="btn btn-info mt-3"
+                onClick={() => handleSave()}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
