@@ -9,12 +9,20 @@ import React, {
 import ReactPaginate from "react-paginate";
 import { deleteRole, fetchAllRoles } from "../../services/roleService";
 import { toast } from "react-toastify";
+import ModalDeleteRole from "./ModalDeleteRole";
+import ModalUpdateRole from "./ModalUpdateRole";
 
 const TableRole = forwardRef((props, ref) => {
   const [listRoles, setListRoles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentLimit, setCurrentLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
+
+  const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+  const [dataModalDelete, setDataModalDelete] = useState({});
+
+  const [isShowModalUpdate, setIsShowModalUpdate] = useState(false);
+  const [dataModalUpdate, setDataModalUpdate] = useState({});
 
   useEffect(() => {
     getAllRoles();
@@ -39,15 +47,33 @@ const TableRole = forwardRef((props, ref) => {
     setCurrentPage(+event.selected + 1);
   };
 
-  // const handleEditUser = (role) => {};
+  const handleEditUser = (role) => {
+    setDataModalUpdate(role);
+    setIsShowModalUpdate(true);
+  };
 
   const handleDeleteRole = async (role) => {
-    let data = await deleteRole(role);
-    console.log(role);
+    setDataModalDelete(role);
+    setIsShowModalDelete(true);
+  };
+
+  const handleConfirmDeleteRole = async () => {
+    let data = await deleteRole(dataModalDelete);
     if (data && +data.EC === 0) {
       toast.success(data.EM);
       await getAllRoles();
+      setIsShowModalDelete(false);
     }
+  };
+
+  const handleCloseDelete = () => {
+    setDataModalDelete({});
+    setIsShowModalDelete(false);
+  };
+
+  const handleCloseUpdate = () => {
+    setDataModalUpdate({});
+    setIsShowModalUpdate(false);
   };
   return (
     <>
@@ -71,13 +97,13 @@ const TableRole = forwardRef((props, ref) => {
                       <td>{role?.url}</td>
                       <td>{role?.description}</td>
                       <td>
-                        {/* <span
+                        <span
                           title="Edit"
                           className="edit"
                           onClick={() => handleEditUser(role)}
                         >
                           <i className="fa fa-pencil" />
-                        </span> */}
+                        </span>
                         <span
                           title="Delete"
                           className="delete"
@@ -124,6 +150,20 @@ const TableRole = forwardRef((props, ref) => {
           />
         </div>
       )}
+
+      <ModalDeleteRole
+        show={isShowModalDelete}
+        handleClose={handleCloseDelete}
+        confirmDeleteRole={handleConfirmDeleteRole}
+        role={dataModalDelete}
+      />
+
+      <ModalUpdateRole
+        show={isShowModalUpdate}
+        handleClose={handleCloseUpdate}
+        dataModalRole={dataModalUpdate}
+        getAllRoles={getAllRoles}
+      />
     </>
   );
 });
