@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { getUserAccount } from "../services/userService";
 
@@ -45,15 +46,7 @@ const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log(window.location.pathname);
-    if (
-      window.location.pathname !== "/" &&
-      window.location.pathname !== "/login"
-    ) {
-      fetchUser();
-    } else {
-      setUser({ ...user, isLoading: false });
-    }
+    fetchUser();
   }, []);
 
   return (

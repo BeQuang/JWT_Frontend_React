@@ -1,13 +1,23 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import "./Register.scss";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { validateRegister } from "../Validate/Validate";
 import { registerNewUser } from "../../services/userService";
 import { toast } from "react-toastify";
+import { UserContext } from "../../context/UserContext";
 
 function Register() {
   let navigate = useNavigate();
+
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (user && user.isAuthenticated) {
+      navigate("/");
+    }
+  }, [user]);
 
   const [dataRegister, setDataRegister] = useState({
     username: "",

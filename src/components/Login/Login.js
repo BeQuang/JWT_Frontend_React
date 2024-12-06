@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
@@ -14,7 +15,7 @@ import "./Login.scss";
 const Login = () => {
   let navigate = useNavigate();
 
-  const { loginContext } = useContext(UserContext);
+  const { loginContext, user } = useContext(UserContext);
 
   const [valueLogin, setValueLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +25,12 @@ const Login = () => {
   const handleCreateNewAccount = () => {
     navigate("/register");
   };
+
+  useEffect(() => {
+    if (user && user.isAuthenticated) {
+      navigate("/");
+    }
+  }, [user]);
 
   const handleLogin = async () => {
     let checkValidLogin = validateLogin(
