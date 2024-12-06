@@ -5,6 +5,7 @@ import { fetchAllGroups } from "../../services/userService";
 import {
   fetchAllRoleNotWithPaginate,
   fetchRoleByGroup,
+  assignRoleToGroup,
 } from "../../services/roleService";
 import { toast } from "react-toastify";
 import _ from "lodash";
@@ -84,6 +85,37 @@ function GroupRole() {
       setAssignRoleByGroup(_assignRoleByGroup);
     }
   };
+
+  const buildDataToSave = () => {
+    // data = {groupId: 4, groupRoles: [{}, {}, {}, {}, {},...]}
+    let result = {};
+    const _assignRoleByGroup = _.cloneDeep(assignRoleByGroup);
+
+    let groupRolesFilter = _assignRoleByGroup.filter(
+      (item) => item.isAssign === true
+    );
+    let groupRolesFinal = groupRolesFilter.map((item) => {
+      let data = { groupId: +selectGroups, roleId: item.id };
+      return data;
+    });
+
+    result.groupId = selectGroups;
+    result.groupRoles = groupRolesFinal;
+
+    return result;
+  };
+
+  const handleSave = async () => {
+    let data = buildDataToSave();
+
+    //Assign Roles to Group
+    let response = await assignRoleToGroup(data);
+    if (response && response.EC === 0) {
+      toast.success(response.EM);
+    } else {
+      toast.error(response.EM);
+    }
+  };
   return (
     <div className="group-role-container">
       <div className="container">
@@ -140,7 +172,9 @@ function GroupRole() {
               </div>
 
               <div className="mt-3">
-                <button className="btn btn-info">Save</button>
+                <button className="btn btn-info" onClick={() => handleSave()}>
+                  Save
+                </button>
               </div>
             </>
           )}
