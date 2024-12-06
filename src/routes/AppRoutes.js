@@ -5,6 +5,7 @@ import Register from "../components/Register/Register";
 import { Routes, Route } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import Role from "../components/Role/Role";
+import GroupRole from "../components/GroupRole/GroupRole";
 
 function AppRoutes() {
   return (
@@ -20,6 +21,7 @@ function AppRoutes() {
         >
           <Route path="users" element={<Users />} />
           <Route path="role" element={<Role />} />
+          <Route path="group-role" element={<GroupRole />} />
           <Route path="projects" />
         </Route>
 

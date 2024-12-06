@@ -6,7 +6,7 @@ function ModalDeleteRole({ show, handleClose, confirmDeleteRole, role }) {
     <>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Delete User</Modal.Title>
+          <Modal.Title>Confirm Delete Role</Modal.Title>
         </Modal.Header>
         <Modal.Body>Woohoo, are you sure to delete this {role.url}?</Modal.Body>
         <Modal.Footer>

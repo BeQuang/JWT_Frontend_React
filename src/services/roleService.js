@@ -8,6 +8,10 @@ const fetchAllRoles = (page, limit) => {
   return axios.get(`/api/v1/role/read?page=${page}&limit=${limit}`);
 };
 
+const fetchAllRoleNotWithPaginate = () => {
+  return axios.get("/api/v1/role/read");
+};
+
 const updateCurrentRole = (roleData) => {
   return axios.put("/api/v1/role/update", { ...roleData });
 };
@@ -18,4 +22,15 @@ const deleteRole = (role) => {
   });
 };
 
-export { createRoles, fetchAllRoles, updateCurrentRole, deleteRole };
+const fetchRoleByGroup = (groupId) => {
+  return axios.get(`/api/v1/role/by-group/${groupId}`);
+};
+
+export {
+  createRoles,
+  fetchAllRoles,
+  updateCurrentRole,
+  deleteRole,
+  fetchAllRoleNotWithPaginate,
+  fetchRoleByGroup,
+};
